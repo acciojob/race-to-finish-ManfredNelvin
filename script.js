@@ -1,18 +1,14 @@
-const promises = Array.from({ length: 5 }, () => {
-  const randomTime = Math.floor(Math.random() * 5000) + 1000; // Random time between 1 and 5 seconds
-  return new Promise((resolve) => {
+const promises = [];
+for (let i = 0; i < 5; i++) {
+  const delay = Math.floor(Math.random() * 4) + 1;
+  const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(`Promise resolved after ${randomTime} milliseconds`);
-    }, randomTime);
+      resolve(i);
+    }, delay * 1000);
   });
-});
+  promises.push(promise);
+}
 
-// Using Promise.any() to wait for the first resolved promise
-Promise.any(promises)
-  .then((result) => {
-    const outputDiv = document.getElementById('output');
-    outputDiv.textContent = result;
-  })
-  .catch((error) => {
-    console.error('All promises rejected:', error);
-  });
+Promise.any(promises).then((result) => {
+  document.getElementById("output").innerHTML = result;
+});
